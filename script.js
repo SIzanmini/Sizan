@@ -149,17 +149,17 @@ function drawText() {
         if(secondOpacity < 1) secondOpacity += 0.01;
     }
 
-    // Final Question and Buttons
+   // Final Question and Buttons
     if(frameNumber >= 2100){
         context.fillStyle = `rgba(255, 77, 109, ${thirdOpacity})`;
-        context.fillText("Will u be my Valentine? 💖", canvas.width/2, (canvas.height/2 + 120));
+        // Lekha-ta ektu upore rakhlam jate niche button-er jayga hoy
+        context.fillText("Will u be my Valentine? 💖", canvas.width/2, (canvas.height/2 + 100));
+        
         if(thirdOpacity < 1) thirdOpacity += 0.01;
         
+        // Buttons show kora
         if(buttonContainer) buttonContainer.style.display = "flex";
-    }   
-
-    context.shadowColor = "transparent";
-}
+    }
 
 function draw() {
     context.putImageData(baseFrame, 0, 0);
