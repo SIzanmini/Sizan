@@ -2,10 +2,6 @@ var canvas = document.getElementById("starfield");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-var canvas = document.getElementById("starfield");
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
 var context = canvas.getContext("2d");
 var stars = 500;
 var colorrange = [0, 60, 240];
@@ -55,18 +51,21 @@ const yesButton = document.getElementById("yesButton");
 const noButton = document.getElementById("noButton");
 const buttonContainer = document.getElementById("buttonContainer");
 
-yesButton.addEventListener("click", () => {
-    alert("YAY! I'm the luckiest person in the world! ❤️✨");
-});
+if(yesButton) {
+    yesButton.addEventListener("click", () => {
+        alert("YAY! I'm the luckiest person in the world! ❤️✨");
+    });
+}
 
-// No button paliye jabe
-noButton.addEventListener("mouseover", () => {
-    const x = Math.random() * (window.innerWidth - 150);
-    const y = Math.random() * (window.innerHeight - 100);
-    noButton.style.position = "absolute";
-    noButton.style.left = x + "px";
-    noButton.style.top = y + "px";
-});
+if(noButton) {
+    noButton.addEventListener("mouseover", () => {
+        const x = Math.random() * (window.innerWidth - 150);
+        const y = Math.random() * (window.innerHeight - 100);
+        noButton.style.position = "absolute";
+        noButton.style.left = x + "px";
+        noButton.style.top = y + "px";
+    });
+}
 
 function drawTextWithLineBreaks(lines, x, y, fontSize, lineHeight) {
     lines.forEach((line, index) => {
@@ -83,23 +82,23 @@ function drawText() {
     context.shadowColor = "rgba(45, 45, 255, 1)";
     context.shadowBlur = 8;
 
-    // Line 1: Luck
+    // Line 1: 0 to 500 frames
     if(frameNumber < 250){
-        context.fillStyle = `rgba(45, 45, 255, ${opacity})`;
+        context.fillStyle = `rgba(173, 216, 230, ${opacity})`;
         context.fillText("poritidin ami believe korte pari na je how lucky I am", canvas.width/2, canvas.height/2);
         opacity += 0.01;
     }
     if(frameNumber >= 250 && frameNumber < 500){
-        context.fillStyle = `rgba(45, 45, 255, ${opacity})`;
+        context.fillStyle = `rgba(173, 216, 230, ${opacity})`;
         context.fillText("poritidin ami believe korte pari na je how lucky I am", canvas.width/2, canvas.height/2);
         opacity -= 0.01;
     }
 
     if(frameNumber == 500) opacity = 0;
 
-    // Line 2: Stars
+    // Line 2: 500 to 1000 frames
     if(frameNumber > 500 && frameNumber < 750){
-        context.fillStyle = `rgba(45, 45, 255, ${opacity})`;
+        context.fillStyle = `rgba(173, 216, 230, ${opacity})`;
         if (window.innerWidth < 600) {
             drawTextWithLineBreaks(["amongst trillions and trillions of stars,", "over billions of years..."], canvas.width / 2, canvas.height / 2, fontSize, lineHeight);
         } else {
@@ -108,7 +107,7 @@ function drawText() {
         opacity += 0.01;
     }
     if(frameNumber >= 750 && frameNumber < 1000){
-        context.fillStyle = `rgba(45, 45, 255, ${opacity})`;
+        context.fillStyle = `rgba(173, 216, 230, ${opacity})`;
         if (window.innerWidth < 600) {
             drawTextWithLineBreaks(["amongst trillions and trillions of stars,", "over billions of years..."], canvas.width / 2, canvas.height / 2, fontSize, lineHeight);
         } else {
@@ -119,58 +118,44 @@ function drawText() {
 
     if(frameNumber == 1000) opacity = 0;
 
-    // Line 3: Spending Time
+    // Line 3: 1000 to 1500 frames
     if(frameNumber > 1000 && frameNumber < 1250){
-        context.fillStyle = `rgba(45, 45, 255, ${opacity})`;
+        context.fillStyle = `rgba(173, 216, 230, ${opacity})`;
         context.fillText("beche asi jate tmr sathe time spend korte parbo ei life e", canvas.width/2, canvas.height/2);
         opacity += 0.01;
     }
     if(frameNumber >= 1250 && frameNumber < 1500){
-        context.fillStyle = `rgba(45, 45, 255, ${opacity})`;
+        context.fillStyle = `rgba(173, 216, 230, ${opacity})`;
         context.fillText("beche asi jate tmr sathe time spend korte parbo ei life e", canvas.width/2, canvas.height/2);
         opacity -= 0.01;
     }
 
     if(frameNumber == 1500) opacity = 0;
 
-    // Line 4: Amazing
-    if(frameNumber > 1500 && frameNumber < 1750){
-        context.fillStyle = `rgba(45, 45, 255, ${opacity})`;
-        context.fillText("karon tumi asholei onno shobai theke alada,", canvas.width/2, canvas.height/2);
-        opacity += 0.01;
-    }
-    if(frameNumber >= 1750 && frameNumber < 2000){
-        context.fillStyle = `rgba(45, 45, 255, ${opacity})`;
-        context.fillText("karon tumi asholei onno shobai theke alada,", canvas.width/2, canvas.height/2);
-        opacity -= 0.01;
-    }
-
-    if(frameNumber == 2000) opacity = 0;
-
-    // Line 5: Love Confession
-    if(frameNumber > 2000 && frameNumber < 2500){
-        context.fillStyle = `rgba(45, 45, 255, ${opacity})`;
+    // Line 4: Final Love Confession (Stay on screen)
+    if(frameNumber > 1500){
+        context.fillStyle = `rgba(255, 182, 193, ${opacity})`;
         if (window.innerWidth < 600) {
-            drawTextWithLineBreaks(["I love you so much Junie, more than", "sobar theke besi valobasi!"], canvas.width / 2, canvas.height / 2, fontSize, lineHeight);
+            drawTextWithLineBreaks(["I love you so much Junie, more than", "sobar theke besi valobasi!"], canvas.width / 2, canvas.height / 2 - 20, fontSize, lineHeight);
         } else {
-            context.fillText("I love you so much Junie, more than sobar theke besi valobasi!", canvas.width/2, canvas.height/2);
+            context.fillText("I love you so much Junie, more than sobar theke besi valobasi!", canvas.width/2, canvas.height/2 - 20);
         }
-        opacity += 0.01;
+        if(opacity < 1) opacity += 0.01;
     }
 
-    // Line 6: Forever
-    if(frameNumber >= 2500){
+    if(frameNumber >= 1800){
         context.fillStyle = `rgba(255, 255, 255, ${secondOpacity})`;
-        context.fillText("I hope we can stay together forever :333", canvas.width/2, (canvas.height/2 + 50));
-        secondOpacity += 0.01;
+        context.fillText("I hope we can stay together forever :333", canvas.width/2, (canvas.height/2 + 40));
+        if(secondOpacity < 1) secondOpacity += 0.01;
     }
 
     // Final Question and Buttons
-    if(frameNumber >= 2800){
+    if(frameNumber >= 2100){
         context.fillStyle = `rgba(255, 77, 109, ${thirdOpacity})`;
         context.fillText("Will u be my Valentine? 💖", canvas.width/2, (canvas.height/2 + 120));
-        thirdOpacity += 0.01;
-        buttonContainer.style.display = "flex";
+        if(thirdOpacity < 1) thirdOpacity += 0.01;
+        
+        if(buttonContainer) buttonContainer.style.display = "flex";
     }   
 
     context.shadowColor = "transparent";
@@ -193,5 +178,4 @@ window.addEventListener("resize", function () {
     baseFrame = context.getImageData(0, 0, window.innerWidth, window.innerHeight);
 });
 
-window.requestAnimationFrame(draw);
 window.requestAnimationFrame(draw);
