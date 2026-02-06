@@ -1,24 +1,31 @@
 var canvas = document.getElementById("starfield");
+var context = canvas.getContext("2d");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-var context = canvas.getContext("2d");
-var stars = 500;
-var colorrange = [0, 60, 240];
+var stars = 400;
 var starArray = [];
+var hearts = []; // Floating hearts array
 
-function getRandom(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+// Initialize Stars
+for (var i = 0; i < stars; i++) {
+    starArray.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        radius: Math.random() * 1.5,
+        opacity: Math.random()
+    });
 }
 
-for (var i = 0; i < stars; i++) {
-    var x = Math.random() * canvas.offsetWidth;
-    var y = Math.random() * canvas.offsetHeight;
-    var radius = Math.random() * 1.2;
-    var hue = colorrange[getRandom(0, colorrange.length - 1)];
-    var sat = getRandom(50, 100);
-    var opacity = Math.random();
-    starArray.push({ x, y, radius, hue, sat, opacity });
+// Initialize Floating Hearts
+function createHeart() {
+    return {
+        x: Math.random() * canvas.width,
+        y: canvas.height + 20,
+        size: Math.random() * 15 + 10,
+        speed: Math.random() * 2 + 1,
+        opacity: Math.random() * 0.5 + 0.3
+    };
 }
 
 var frameNumber = 0;
@@ -26,156 +33,108 @@ var opacity = 0;
 var secondOpacity = 0;
 var thirdOpacity = 0;
 
-var baseFrame = context.getImageData(0, 0, window.innerWidth, window.innerHeight);
-
-function drawStars() {
-    for (var i = 0; i < stars; i++) {
-        var star = starArray[i];
-        context.beginPath();
-        context.arc(star.x, star.y, star.radius, 0, 360);
-        context.fillStyle = "hsla(" + star.hue + ", " + star.sat + "%, 88%, " + star.opacity + ")";
-        context.fill();
-    }
-}
-
-function updateStars() {
-    for (var i = 0; i < stars; i++) {
-        if (Math.random() > 0.99) {
-            starArray[i].opacity = Math.random();
-        }
-    }
-}
-
-// --- BUTTON LOGIC ---
 const yesButton = document.getElementById("yesButton");
 const noButton = document.getElementById("noButton");
 const buttonContainer = document.getElementById("buttonContainer");
+const kitty = document.getElementById("kitty");
 
-if(yesButton) {
-    yesButton.addEventListener("click", () => {
-        alert("YAY! I'm the luckiest person in the world! ❤️✨");
+// --- YES CLICK: ULTRA MAGIC ---
+yesButton.addEventListener("click", () => {
+    alert("YAY! I love you so much! 💖✨");
+    // Confetti + Flying Hearts
+    for(let i=0; i<150; i++) {
+        const c = document.createElement("div");
+        c.className = "confetti";
+        c.innerHTML = Math.random() > 0.5 ? "💖" : "🌸"; // Hearts and Flowers
+        c.style.left = Math.random() * 100 + "vw";
+        c.style.fontSize = Math.random() * 20 + 10 + "px";
+        c.style.position = "fixed";
+        c.style.top = "-20px";
+        c.style.zIndex = "1000";
+        c.style.transition = "transform 3s linear, opacity 3s";
+        document.body.appendChild(c);
+        
+        setTimeout(() => {
+            c.style.transform = `translateY(110vh) rotate(${Math.random() * 360}deg)`;
+            c.style.opacity = "0";
+        }, 10);
+        setTimeout(() => c.remove(), 3000);
+    }
+});
+
+noButton.addEventListener("mouseover", () => {
+    noButton.style.position = "absolute";
+    noButton.style.left = Math.random() * 80 + "vw";
+    noButton.style.top = Math.random() * 80 + "vh";
+});
+
+function drawStars() {
+    starArray.forEach(star => {
+        context.beginPath();
+        context.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+        context.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
+        context.fill();
+        if (Math.random() > 0.98) star.opacity = Math.random();
     });
 }
 
-if(noButton) {
-    noButton.addEventListener("mouseover", () => {
-        const x = Math.random() * (window.innerWidth - 150);
-        const y = Math.random() * (window.innerHeight - 100);
-        noButton.style.position = "absolute";
-        noButton.style.left = x + "px";
-        noButton.style.top = y + "px";
-    });
-}
-
-function drawTextWithLineBreaks(lines, x, y, fontSize, lineHeight) {
-    lines.forEach((line, index) => {
-        context.fillText(line, x, y + index * (fontSize + lineHeight));
+function drawFloatingHearts() {
+    if (frameNumber % 20 === 0) hearts.push(createHeart());
+    
+    hearts.forEach((h, index) => {
+        h.y -= h.speed;
+        context.font = h.size + "px serif";
+        context.fillStyle = `rgba(255, 105, 180, ${h.opacity})`;
+        context.fillText("❤️", h.x, h.y);
+        if (h.y < -20) hearts.splice(index, 1);
     });
 }
 
 function drawText() {
-    var fontSize = Math.min(30, window.innerWidth / 24); 
-    var lineHeight = 8;
-
-    context.font = fontSize + "px Comic Sans MS";
+    var fontSize = Math.min(26, window.innerWidth / 22);
+    context.font = fontSize + "px 'Comic Sans MS', cursive";
     context.textAlign = "center";
-    context.shadowColor = "rgba(45, 45, 255, 1)";
-    context.shadowBlur = 8;
+    context.shadowBlur = 15;
+    context.shadowColor = "rgba(0, 100, 255, 0.5)";
 
-    // Line 1: 0 to 500 frames
-    if(frameNumber < 250){
+    if(frameNumber < 300) {
         context.fillStyle = `rgba(173, 216, 230, ${opacity})`;
         context.fillText("poritidin ami believe korte pari na je how lucky I am", canvas.width/2, canvas.height/2);
         opacity += 0.01;
-    }
-    if(frameNumber >= 250 && frameNumber < 500){
+    } else if(frameNumber < 600) {
+        opacity -= 0.01;
         context.fillStyle = `rgba(173, 216, 230, ${opacity})`;
         context.fillText("poritidin ami believe korte pari na je how lucky I am", canvas.width/2, canvas.height/2);
-        opacity -= 0.01;
     }
 
-    if(frameNumber == 500) opacity = 0;
-
-    // Line 2: 500 to 1000 frames
-    if(frameNumber > 500 && frameNumber < 750){
-        context.fillStyle = `rgba(173, 216, 230, ${opacity})`;
-        if (window.innerWidth < 600) {
-            drawTextWithLineBreaks(["amongst trillions and trillions of stars,", "over billions of years..."], canvas.width / 2, canvas.height / 2, fontSize, lineHeight);
-        } else {
-            context.fillText("amongst trillions and trillions of stars, over billions of years...", canvas.width/2, canvas.height/2);
-        }
-        opacity += 0.01;
-    }
-    if(frameNumber >= 750 && frameNumber < 1000){
-        context.fillStyle = `rgba(173, 216, 230, ${opacity})`;
-        if (window.innerWidth < 600) {
-            drawTextWithLineBreaks(["amongst trillions and trillions of stars,", "over billions of years..."], canvas.width / 2, canvas.height / 2, fontSize, lineHeight);
-        } else {
-            context.fillText("amongst trillions and trillions of stars, over billions of years...", canvas.width/2, canvas.height/2);
-        }
-        opacity -= 0.01;
-    }
-
-    if(frameNumber == 1000) opacity = 0;
-
-    // Line 3: 1000 to 1500 frames
-    if(frameNumber > 1000 && frameNumber < 1250){
-        context.fillStyle = `rgba(173, 216, 230, ${opacity})`;
-        context.fillText("beche asi jate tmr sathe time spend korte parbo ei life e", canvas.width/2, canvas.height/2);
-        opacity += 0.01;
-    }
-    if(frameNumber >= 1250 && frameNumber < 1500){
-        context.fillStyle = `rgba(173, 216, 230, ${opacity})`;
-        context.fillText("beche asi jate tmr sathe time spend korte parbo ei life e", canvas.width/2, canvas.height/2);
-        opacity -= 0.01;
-    }
-
-    if(frameNumber == 1500) opacity = 0;
-
-    // Line 4: Final Love Confession (Stay on screen)
-    if(frameNumber > 1500){
-        context.fillStyle = `rgba(255, 182, 193, ${opacity})`;
-        if (window.innerWidth < 600) {
-            drawTextWithLineBreaks(["I love you so much Junie, more than", "sobar theke besi valobasi!"], canvas.width / 2, canvas.height / 2 - 20, fontSize, lineHeight);
-        } else {
-            context.fillText("I love you so much Junie, more than sobar theke besi valobasi!", canvas.width/2, canvas.height/2 - 20);
-        }
-        if(opacity < 1) opacity += 0.01;
-    }
-
-    if(frameNumber >= 1800){
-        context.fillStyle = `rgba(255, 255, 255, ${secondOpacity})`;
-        context.fillText("I hope we can stay together forever :333", canvas.width/2, (canvas.height/2 + 40));
+    if(frameNumber > 650) {
+        context.fillStyle = `rgba(255, 182, 193, ${secondOpacity})`;
+        context.fillText("I love you so much Junie, more than sobar theke besi valobasi!", canvas.width/2, canvas.height/2 - 40);
         if(secondOpacity < 1) secondOpacity += 0.01;
     }
 
-   // Final Question and Buttons
-    if(frameNumber >= 2100){
-        context.fillStyle = `rgba(255, 77, 109, ${thirdOpacity})`;
-        // Lekha-ta ektu upore rakhlam jate niche button-er jayga hoy
-        context.fillText("Will u be my Valentine? 💖", canvas.width/2, (canvas.height/2 + 100));
-        
+    if(frameNumber > 950) {
+        context.fillStyle = `rgba(255, 255, 255, ${thirdOpacity})`;
+        context.fillText("I hope we can stay together forever :333 🌸", canvas.width/2, canvas.height/2 + 20);
         if(thirdOpacity < 1) thirdOpacity += 0.01;
-        
-        // Buttons show kora
-        if(buttonContainer) buttonContainer.style.display = "flex";
     }
 
-function draw() {
-    context.putImageData(baseFrame, 0, 0);
-    drawStars();
-    updateStars();
-    drawText();
-    if (frameNumber < 99999) {
-        frameNumber++;
+    if(frameNumber > 1250) {
+        context.fillStyle = "#ff4d6d";
+        context.font = "bold " + (fontSize + 5) + "px 'Comic Sans MS'";
+        context.fillText("Will u be my Valentine? 💖", canvas.width/2, canvas.height/2 + 110);
+        buttonContainer.style.display = "flex";
+        kitty.style.display = "block";
     }
-    window.requestAnimationFrame(draw);
 }
 
-window.addEventListener("resize", function () {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    baseFrame = context.getImageData(0, 0, window.innerWidth, window.innerHeight);
-});
+function draw() {
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    drawStars();
+    if(frameNumber > 1000) drawFloatingHearts(); // Hearts start appearing later
+    drawText();
+    frameNumber++;
+    requestAnimationFrame(draw);
+}
 
-window.requestAnimationFrame(draw);
+draw();
