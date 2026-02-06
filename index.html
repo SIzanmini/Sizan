@@ -9,16 +9,21 @@
     <link rel="stylesheet" href="public/style.css">
     
     <style>
-      /* Notun button gulo kemon dekhabe tar simple design */
+      body {
+        margin: 0;
+        overflow: hidden;
+        background-color: black;
+      }
+
       #buttonContainer {
-    position: absolute;
-    top: 85%; /* Arektu niche nambanor jonno 85% dilam */
-    left: 50%;
-    transform: translate(-50%, -50%);
-    display: none; /* JS theke show hobe */
-    gap: 20px;
-    z-index: 10;
-}
+        position: absolute;
+        top: 85%; /* Button niche nambiyechi */
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: none; /* JS theke show hobe */
+        gap: 20px;
+        z-index: 100;
+      }
 
       .btn {
         padding: 12px 25px;
@@ -45,10 +50,28 @@
         transform: scale(1.1);
         background-color: #ff758f;
       }
+
+      /* Kitty GIF Design */
+      #kitty {
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        width: 100px; /* Size choto thakle cute lage */
+        display: none; /* Button ashar shathe ashbe */
+        z-index: 50;
+        filter: drop-shadow(0 0 10px pink);
+      }
+
+      /* Confetti for Yes click */
+      .confetti {
+        pointer-events: none;
+      }
     </style>
   </head>
   <body>
     <canvas id="starfield"></canvas>
+
+    <img id="kitty" src="https://media.tenor.com/On7tT9En_e4AAAAj/hello-kitty.gif" alt="Kitty">
 
     <div id="buttonContainer">
         <button id="yesButton" class="btn">Yes! 💖</button>
