@@ -5,12 +5,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta property="og:image" content="https://raw.githubusercontent.com/sojijr/valentine-website/main/public/images/favicon.png">
     <link rel="icon" href="public/images/favicon.png" type="image/x-icon" />  
-    <title>Happy Valentine's Day</title>
+    <title>Will u be my Valentine? 💖</title>
     <link rel="stylesheet" href="public/style.css">
+    
+    <style>
+      /* Notun button gulo kemon dekhabe tar simple design */
+      #buttonContainer {
+        position: absolute;
+        top: 65%; /* Likhar ektu niche thakbe */
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: none; /* Prothome dekha jabe na */
+        gap: 20px;
+        z-index: 10;
+      }
+
+      .btn {
+        padding: 12px 25px;
+        font-size: 18px;
+        font-family: 'Comic Sans MS', cursive;
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+        transition: 0.3s;
+        box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+      }
+
+      #yesButton {
+        background-color: #ff4d6d;
+        color: white;
+      }
+
+      #noButton {
+        background-color: #ffffff;
+        color: #ff4d6d;
+      }
+
+      #yesButton:hover {
+        transform: scale(1.1);
+        background-color: #ff758f;
+      }
+    </style>
   </head>
   <body>
     <canvas id="starfield"></canvas>
-    <button id="valentinesButton">Click Me! ❤</button>
+
+    <div id="buttonContainer">
+        <button id="yesButton" class="btn">Yes! 💖</button>
+        <button id="noButton" class="btn">No.. 🥺</button>
+    </div>
+
     <script src="script.js"></script>
   </body>
 </html>
