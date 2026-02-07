@@ -1,7 +1,10 @@
 var canvas = document.getElementById("starfield");
 var context = canvas.getContext("2d");
-var kitty = document.getElementById("kitty");
 var btnContainer = document.getElementById("buttonContainer");
+
+// ইমেজ ডিলিট করে দিয়েছি, তাই ওই আইডি আর লাগবে না
+var kitty = document.getElementById("kitty");
+if(kitty) kitty.style.display = "none"; 
 
 function resize() {
     canvas.width = window.innerWidth;
@@ -39,7 +42,7 @@ for (var i = 0; i < 35; i++) {
 
 var frameNumber = 0;
 
-// Function to draw petal shape
+// Function to draw petal shape (গোল নয়, পাপড়ির মতো)
 function drawPetal(x, y, size, angle) {
     context.save();
     context.translate(x, y);
@@ -54,11 +57,11 @@ function drawPetal(x, y, size, angle) {
 }
 
 function draw() {
-    // 1. Clear background
+    // Canvas clear প্রতি ফ্রেমে
     context.fillStyle = "#0b0d17";
     context.fillRect(0, 0, canvas.width, canvas.height);
 
-    // 2. Draw Stars
+    // 1. Draw Stars
     starArray.forEach(s => {
         context.beginPath();
         context.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
@@ -68,7 +71,7 @@ function draw() {
         if (s.opacity > 1 || s.opacity < 0) s.blink = -s.blink;
     });
 
-    // 3. Draw Petals
+    // 2. Draw Petals
     petals.forEach(p => {
         drawPetal(p.x, p.y, p.size, p.angle);
         p.y += p.speed;
@@ -76,13 +79,12 @@ function draw() {
         if (p.y > canvas.height) p.y = -20;
     });
 
-    // 4. Sequential Text Logic (Very Slow)
+    // 3. Sequential Text Logic (একটার পর একটা আসবে)
     var x = canvas.width / 2;
     var y = canvas.height / 2;
     context.textAlign = "center";
     context.font = Math.min(26, window.innerWidth / 22) + "px 'Comic Sans MS'";
 
-    // Sequence Control
     if (frameNumber < 600) {
         let alpha = Math.min(frameNumber / 200, (600 - frameNumber) / 200);
         context.fillStyle = `rgba(173, 216, 230, ${alpha})`;
@@ -99,7 +101,7 @@ function draw() {
         context.fillText("beche asi jate tmr sathe time spend korte parbo ei life e.", x, y);
     } 
     else {
-        // Final State
+        // Final Screen
         let fAlpha = Math.min((frameNumber - 1800) / 200, 1);
         
         context.fillStyle = `rgba(255, 133, 161, ${fAlpha})`;
@@ -117,8 +119,7 @@ function draw() {
             context.font = "bold 32px 'Comic Sans MS'";
             context.fillText("Will u be my Valentine? 💖", x, y + 70);
             
-            // Show Kitty GIF and Buttons
-            kitty.style.display = "block";
+            // Show Buttons
             btnContainer.style.display = "flex";
             btnContainer.style.opacity = a3;
         }
@@ -128,17 +129,12 @@ function draw() {
     requestAnimationFrame(draw);
 }
 
-// No button run away logic
+// No button behavior (মাউস নিলে পালাবে)
 const noBtn = document.getElementById("noButton");
 noBtn.onmouseover = function() {
     this.style.position = "absolute";
     this.style.left = Math.random() * (window.innerWidth - 120) + "px";
     this.style.top = Math.random() * (window.innerHeight - 60) + "px";
-};
-
-// Yes button click
-document.getElementById("yesButton").onclick = function() {
-    alert("YAY! I'm the luckiest person! ❤️✨");
 };
 
 draw();
