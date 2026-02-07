@@ -109,7 +109,7 @@ function animate() {
         let alpha = Math.min((frameNumber - 1200) / 200, (1800 - frameNumber) / 200);
         context.fillStyle = `rgba(173, 216, 230, ${Math.max(0, alpha)})`;
         // "High pen" বা অন্য কিছু চাইলে এখানে টেক্সট চেঞ্জ করতে পারো
-        context.fillText("so glad tmk paise ei universe e", x, y); 
+        context.fillText("so glad tmk paise ei universe e baby", x, y); 
     } 
     else {
         let fAlpha = Math.min((frameNumber - 1800) / 200, 1);
@@ -121,7 +121,7 @@ function animate() {
             let a2 = Math.min((frameNumber - 2000) / 200, 1);
             context.fillStyle = `rgba(255, 255, 255, ${a2})`;
             context.font = Math.min(22, window.innerWidth / 25) + "px 'Comic Sans MS'";
-            context.fillText("I hope we can stay together forever.", x, y + 20); // clean text
+            context.fillText("I hope we can stay together forever :333333", x, y + 20); // clean text
         }
         
         if (frameNumber > 2300) {
