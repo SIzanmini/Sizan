@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Will u be my Valentine? 💖</title>
+    <title>For My Princess June 💖</title>
     <style>
         body { 
             margin: 0; 
@@ -12,19 +12,47 @@
             font-family: 'Comic Sans MS', cursive;
         }
         
-        /* Start Overlay - Glassmorphism Design */
+        /* Start Overlay Design */
         #startOverlay {
             position: absolute;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
             z-index: 200;
             text-align: center;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 40px;
-            border-radius: 30px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 8px 32px 0 rgba(255, 77, 109, 0.37);
+            background: rgba(255, 255, 255, 0.05);
+            padding: 50px;
+            border-radius: 40px;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 182, 193, 0.3);
+            box-shadow: 0 0 30px rgba(255, 77, 109, 0.2);
+            width: 80%;
+            max-width: 500px;
+        }
+
+        h1 { 
+            color: #ff85a1; 
+            font-size: 2rem;
+            margin-bottom: 30px; 
+            line-height: 1.4;
+            text-shadow: 0 0 15px rgba(255, 133, 161, 0.6);
+        }
+
+        .btn {
+            padding: 15px 40px;
+            font-size: 22px;
+            font-family: 'Comic Sans MS', cursive;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        #startButton {
+            background: linear-gradient(45deg, #ff4d6d, #ff85a1);
+            color: white;
+            box-shadow: 0 5px 20px rgba(255, 77, 109, 0.4);
+            animation: pulse 2s infinite;
         }
 
         #buttonContainer {
@@ -36,61 +64,28 @@
             z-index: 100;
         }
 
-        .btn {
-            padding: 15px 35px;
-            font-size: 20px;
-            font-family: 'Comic Sans MS', cursive;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(255, 77, 109, 0.4);
-            font-weight: bold;
-        }
+        #yesButton { background: #ff4d6d; color: white; }
+        #noButton { background: white; color: #ff4d6d; }
 
-        #startButton {
-            background: linear-gradient(45deg, #ff4d6d, #ff758f);
-            color: white;
-            animation: pulse 2s infinite;
-        }
-
-        #yesButton {
-            background: linear-gradient(45deg, #ff4d6d, #ff85a1);
-            color: white;
-        }
-
-        #noButton {
-            background: white;
-            color: #ff4d6d;
-        }
-
-        .btn:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 6px 20px rgba(255, 77, 109, 0.6);
-        }
-
-        h1 { 
-            color: #ff85a1; 
-            margin-bottom: 30px; 
-            text-shadow: 0 0 10px rgba(255, 133, 161, 0.5);
-            font-size: 2.5rem;
-        }
-
-        /* Pulsing animation for the start button */
         @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+            0% { transform: scale(1); box-shadow: 0 5px 20px rgba(255, 77, 109, 0.4); }
+            50% { transform: scale(1.05); box-shadow: 0 5px 30px rgba(255, 77, 109, 0.6); }
+            100% { transform: scale(1); box-shadow: 0 5px 20px rgba(255, 77, 109, 0.4); }
         }
 
-        span.heart { color: #ff4d6d; }
+        .princess-name {
+            color: #ff4d6d;
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
 
     <div id="startOverlay">
-        <h1>Ready for a surprise? <span class="heart">✨</span></h1>
-        <button id="startButton" class="btn">Click to Start! 🌸</button>
+        <h1>lemme tell u smth <br> <span class="princess-name">my princess june 👑💖</span></h1>
+        <button id="startButton" class="btn">Click to Start! ✨</button>
     </div>
 
     <canvas id="starfield"></canvas>
