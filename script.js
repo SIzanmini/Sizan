@@ -2,6 +2,7 @@ var canvas = document.getElementById("starfield");
 var context = canvas.getContext("2d");
 var btnContainer = document.getElementById("buttonContainer");
 
+// Screen resize function
 function resize() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -13,7 +14,7 @@ var stars = 500;
 var starArray = [];
 var petals = [];
 
-// Initialize stars
+// Initialize stars (Background stars)
 for (var i = 0; i < stars; i++) {
     starArray.push({
         x: Math.random() * canvas.width,
@@ -24,7 +25,7 @@ for (var i = 0; i < stars; i++) {
     });
 }
 
-// Initialize petals (Flowers)
+// Initialize falling petals (Flowers/Hearts)
 for (var i = 0; i < 35; i++) {
     petals.push({
         x: Math.random() * canvas.width,
@@ -38,7 +39,7 @@ for (var i = 0; i < 35; i++) {
 
 var frameNumber = 0;
 
-// Petal shape drawing function
+// Function to draw petal shape (গোল নয়, হার্ট বা পাপড়ির মতো)
 function drawPetal(x, y, size, angle) {
     context.save();
     context.translate(x, y);
@@ -53,10 +54,11 @@ function drawPetal(x, y, size, angle) {
 }
 
 function draw() {
+    // Clear background to prevent text overlapping
     context.fillStyle = "#0b0d17";
     context.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Stars
+    // 1. Draw Stars
     starArray.forEach(s => {
         context.beginPath();
         context.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
@@ -66,7 +68,7 @@ function draw() {
         if (s.opacity > 1 || s.opacity < 0) s.blink = -s.blink;
     });
 
-    // Petals
+    // 2. Draw Petals
     petals.forEach(p => {
         drawPetal(p.x, p.y, p.size, p.angle);
         p.y += p.speed;
@@ -74,12 +76,13 @@ function draw() {
         if (p.y > canvas.height) p.y = -20;
     });
 
-    // Sequential Text
+    // 3. Sequential Text Logic (একটার পর একটা শান্তভাবে আসবে)
     var x = canvas.width / 2;
     var y = canvas.height / 2;
     context.textAlign = "center";
     context.font = Math.min(26, window.innerWidth / 22) + "px 'Comic Sans MS'";
 
+    // Timing (Each line gets 600 frames)
     if (frameNumber < 600) {
         let alpha = Math.min(frameNumber / 200, (600 - frameNumber) / 200);
         context.fillStyle = `rgba(173, 216, 230, ${alpha})`;
@@ -96,7 +99,9 @@ function draw() {
         context.fillText("beche asi jate tmr sathe time spend korte parbo ei life e.", x, y);
     } 
     else {
+        // Final Final Screen (Everything stays here)
         let fAlpha = Math.min((frameNumber - 1800) / 200, 1);
+        
         context.fillStyle = `rgba(255, 133, 161, ${fAlpha})`;
         context.fillText("I love you so much Junie, more than sobar theke besi valobasi!", x, y - 60);
         
@@ -112,6 +117,7 @@ function draw() {
             context.font = "bold 32px 'Comic Sans MS'";
             context.fillText("Will u be my Valentine? 💖", x, y + 70);
             
+            // Show Buttons
             btnContainer.style.display = "flex";
             btnContainer.style.opacity = a3;
         }
@@ -121,12 +127,17 @@ function draw() {
     requestAnimationFrame(draw);
 }
 
-// Button behavior
+// No button run away logic
 const noBtn = document.getElementById("noButton");
 noBtn.onmouseover = function() {
     this.style.position = "absolute";
     this.style.left = Math.random() * (window.innerWidth - 120) + "px";
     this.style.top = Math.random() * (window.innerHeight - 60) + "px";
+};
+
+// Yes button click
+document.getElementById("yesButton").onclick = function() {
+    alert("YAY! I'm the luckiest person in the world! ❤️✨");
 };
 
 draw();
