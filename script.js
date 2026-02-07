@@ -1,6 +1,11 @@
 var canvas = document.getElementById("starfield");
 var context = canvas.getContext("2d");
 var btnContainer = document.getElementById("buttonContainer");
+var startOverlay = document.getElementById("startOverlay");
+var startButton = document.getElementById("startButton");
+
+var isStarted = false;
+var frameNumber = 0;
 
 function resize() {
     canvas.width = window.innerWidth;
@@ -9,11 +14,19 @@ function resize() {
 window.addEventListener("resize", resize);
 resize();
 
+// Start Button Click
+startButton.addEventListener("click", () => {
+    startOverlay.style.display = "none";
+    isStarted = true;
+    frameNumber = 0; // Reset frames
+    draw(); 
+});
+
 var stars = 500;
 var starArray = [];
 var petals = [];
 
-// Stars logic
+// Initialize Stars
 for (var i = 0; i < stars; i++) {
     starArray.push({
         x: Math.random() * canvas.width,
@@ -24,19 +37,17 @@ for (var i = 0; i < stars; i++) {
     });
 }
 
-// Petals initialization (Flower shape)
+// Initialize Falling Petals
 for (var i = 0; i < 35; i++) {
     petals.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
         size: Math.random() * 5 + 5,
-        speed: Math.random() * 0.8 + 0.4, 
+        speed: Math.random() * 0.8 + 0.4,
         drift: Math.random() * 1 - 0.5,
         angle: Math.random() * Math.PI
     });
 }
-
-var frameNumber = 0;
 
 function drawPetal(x, y, size, angle) {
     context.save();
@@ -52,6 +63,8 @@ function drawPetal(x, y, size, angle) {
 }
 
 function draw() {
+    if (!isStarted) return;
+
     context.fillStyle = "#0b0d17";
     context.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -76,6 +89,7 @@ function draw() {
     context.textAlign = "center";
     context.font = Math.min(26, window.innerWidth / 22) + "px 'Comic Sans MS'";
 
+    // Text Sequence
     if (frameNumber < 600) {
         let alpha = Math.min(frameNumber / 200, (600 - frameNumber) / 200);
         context.fillStyle = `rgba(173, 216, 230, ${alpha})`;
@@ -108,10 +122,8 @@ function draw() {
             context.font = "bold 32px 'Comic Sans MS'";
             context.fillText("Will u be my Valentine? 💖", x, y + 70);
             
-            if(btnContainer) {
-                btnContainer.style.display = "flex";
-                btnContainer.style.opacity = a3;
-            }
+            btnContainer.style.display = "flex";
+            btnContainer.style.opacity = a3;
         }
     }
 
@@ -119,34 +131,33 @@ function draw() {
     requestAnimationFrame(draw);
 }
 
-// --- NEW "NO" BUTTON LOGIC ---
+// "No" Button Runaway and Reset Logic
 const noBtn = document.getElementById("noButton");
 if (noBtn) {
-    const moveButton = () => {
-        // বাটন যাতে স্ক্রিনের বাইরে না যায় তার জন্য সেফটি মার্জিন
-        const padding = 100; 
+    const moveAndReset = (e) => {
+        e.preventDefault();
+        // Move button
+        const padding = 100;
         const randomX = Math.random() * (window.innerWidth - padding * 2) + padding;
         const randomY = Math.random() * (window.innerHeight - padding * 2) + padding;
-        
         noBtn.style.position = "absolute";
         noBtn.style.left = randomX + "px";
         noBtn.style.top = randomY + "px";
+
+        // Secret Reset: "No" এ ক্লিক করলে আবার শুরুতে নিয়ে যাবে
+        if(e.type === "click") {
+            isStarted = false;
+            btnContainer.style.display = "none";
+            startOverlay.style.display = "block";
+            frameNumber = 0;
+        }
     };
 
-    // মাউস নিলেও পালাবে, ক্লিক করলেও পালাবে
-    noBtn.addEventListener("mouseover", moveButton);
-    noBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        moveButton();
-    });
+    noBtn.addEventListener("mouseover", moveAndReset);
+    noBtn.addEventListener("click", moveAndReset);
 }
 
-// "Yes" বাটনে ক্লিক করলে কি হবে
-const yesBtn = document.getElementById("yesButton");
-if(yesBtn) {
-    yesBtn.addEventListener("click", () => {
-        alert("YAY! I knew it! ❤️ I love you more! ❤️");
-    });
-}
-
-draw();
+// "Yes" Button Alert
+document.getElementById("yesButton").addEventListener("click", () => {
+    alert("YAY! I'm the luckiest person in the world! ❤️✨");
+});
