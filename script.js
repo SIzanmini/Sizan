@@ -101,18 +101,18 @@ function animate() {
         let alpha = Math.min((frameNumber - 600) / 200, (1200 - frameNumber) / 200);
         context.fillStyle = `rgba(173, 216, 230, ${Math.max(0, alpha)})`;
         context.fillText("amongst trillions and trillions of stars,", x, y - 20);
-        context.fillText("over billions of years...", x, y + 30);
+        context.fillText("over billions of years.", x, y + 30);
     } 
     else if (frameNumber < 1800) {
         let alpha = Math.min((frameNumber - 1200) / 200, (1800 - frameNumber) / 200);
         context.fillStyle = `rgba(173, 216, 230, ${Math.max(0, alpha)})`;
-        context.fillText("beche asi jate tmr sathe time spend korte parbo!", x, y);
+        context.fillText("beche asi jate tmr sathe time spend korte parbo^^", x, y);
     } 
     else {
         let fAlpha = Math.min((frameNumber - 1800) / 200, 1);
         context.fillStyle = `rgba(255, 133, 161, ${fAlpha})`;
         context.fillText("I love you so much Junie,", x, y - 80);
-        context.fillText("more than sobar theke besi valobasi!", x, y - 30);
+        context.fillText("more than sobar theke besi valobasi:PP", x, y - 30);
         
         if (frameNumber > 2000) {
             let a2 = Math.min((frameNumber - 2000) / 200, 1);
@@ -172,5 +172,5 @@ if (noBtn) {
 
 // "Yes" বাটনে সাকসেস মেসেজ
 document.getElementById("yesButton").addEventListener("click", () => {
-    alert("YAY! I knew it! ❤️ Best day ever! ❤️✨");
+    alert("XD I knew it ❤️ Dont forget to tell me baby ;33 ❤️✨");
 });
