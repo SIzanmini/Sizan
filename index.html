@@ -3,49 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For My Princess June 💖</title>
+    <title>For My Princess June 👑💖</title>
     <style>
+        /* বেসিক সেটআপ */
         body { 
             margin: 0; 
+            padding: 0;
             overflow: hidden; 
             background-color: #0b0d17; 
             font-family: 'Comic Sans MS', cursive;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
-        
-        /* Start Overlay Design */
+
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        /* স্টার্ট স্ক্রিন ডিজাইন - আরও কিউট লুক */
         #startOverlay {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
+            position: relative;
             z-index: 200;
             text-align: center;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 50px;
-            border-radius: 40px;
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 182, 193, 0.3);
-            box-shadow: 0 0 30px rgba(255, 77, 109, 0.2);
-            width: 80%;
-            max-width: 500px;
+            background: rgba(255, 255, 255, 0.08);
+            padding: 40px 30px;
+            border-radius: 35px;
+            backdrop-filter: blur(12px);
+            border: 2px solid rgba(255, 133, 161, 0.3);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 77, 109, 0.2);
+            max-width: 90%;
+            width: 450px;
         }
 
         h1 { 
-            color: #ff85a1; 
-            font-size: 2rem;
-            margin-bottom: 30px; 
-            line-height: 1.4;
-            text-shadow: 0 0 15px rgba(255, 133, 161, 0.6);
+            color: #ffffff; 
+            font-size: 1.8rem;
+            margin-bottom: 35px; 
+            line-height: 1.5;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
         }
 
+        .princess-text {
+            color: #ff85a1;
+            display: block;
+            font-size: 2.2rem;
+            margin-top: 10px;
+            font-weight: bold;
+            text-shadow: 0 0 15px rgba(255, 133, 161, 0.5);
+        }
+
+        /* বাটন ডিজাইন */
         .btn {
             padding: 15px 40px;
-            font-size: 22px;
+            font-size: 20px;
             font-family: 'Comic Sans MS', cursive;
             border: none;
             border-radius: 50px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
         }
 
         #startButton {
@@ -56,7 +79,7 @@
         }
 
         #buttonContainer {
-            position: absolute;
+            position: fixed;
             top: 85%; left: 50%;
             transform: translate(-50%, -50%);
             display: none;
@@ -64,31 +87,36 @@
             z-index: 100;
         }
 
-        #yesButton { background: #ff4d6d; color: white; }
-        #noButton { background: white; color: #ff4d6d; }
+        #yesButton { background: #ff4d6d; color: white; box-shadow: 0 4px 15px rgba(255, 77, 109, 0.4); }
+        #noButton { background: white; color: #ff4d6d; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); }
 
-        @keyframes pulse {
-            0% { transform: scale(1); box-shadow: 0 5px 20px rgba(255, 77, 109, 0.4); }
-            50% { transform: scale(1.05); box-shadow: 0 5px 30px rgba(255, 77, 109, 0.6); }
-            100% { transform: scale(1); box-shadow: 0 5px 20px rgba(255, 77, 109, 0.4); }
+        .btn:hover {
+            transform: scale(1.1);
         }
 
-        .princess-name {
-            color: #ff4d6d;
-            font-weight: bold;
-            display: block;
-            margin-top: 10px;
+        /* পালসিং এনিমেশন */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* রেসপনসিভ অ্যাডজাস্টমেন্ট */
+        @media (max-width: 480px) {
+            h1 { font-size: 1.4rem; }
+            .princess-text { font-size: 1.8rem; }
+            .btn { font-size: 18px; padding: 12px 30px; }
         }
     </style>
 </head>
 <body>
 
+    <canvas id="starfield"></canvas>
+
     <div id="startOverlay">
-        <h1>lemme tell u smth <br> <span class="princess-name">my princess june 👑💖</span></h1>
+        <h1>lemme tell u smth <br> <span class="princess-text">my princess june 👑💖</span></h1>
         <button id="startButton" class="btn">Click to Start! ✨</button>
     </div>
-
-    <canvas id="starfield"></canvas>
 
     <div id="buttonContainer">
         <button id="yesButton" class="btn">Yes! 💖</button>
