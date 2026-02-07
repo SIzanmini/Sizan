@@ -14,6 +14,7 @@ function resize() {
 window.addEventListener("resize", resize);
 resize();
 
+// স্টার্ট বাটনে ক্লিক করলে এনিমেশন শুরু হবে
 startButton.addEventListener("click", function() {
     startOverlay.style.display = "none";
     isStarted = true;
@@ -25,7 +26,7 @@ var stars = 500;
 var starArray = [];
 var petals = [];
 
-// Create Stars
+// স্টারস ইনিশিয়ালাইজেশন
 for (var i = 0; i < stars; i++) {
     starArray.push({
         x: Math.random() * canvas.width,
@@ -36,7 +37,7 @@ for (var i = 0; i < stars; i++) {
     });
 }
 
-// Create Petals
+// পাপড়ি (Flowers) ইনিশিয়ালাইজেশন
 for (var i = 0; i < 40; i++) {
     petals.push({
         x: Math.random() * canvas.width,
@@ -67,6 +68,7 @@ function animate() {
     context.fillStyle = "#0b0d17";
     context.fillRect(0, 0, canvas.width, canvas.height);
 
+    // ড্রয়িং স্টারস
     starArray.forEach(s => {
         context.beginPath();
         context.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
@@ -76,6 +78,7 @@ function animate() {
         if (s.opacity > 1 || s.opacity < 0) s.blink = -s.blink;
     });
 
+    // ড্রয়িং পাপড়ি
     petals.forEach(p => {
         drawPetal(p.x, p.y, p.size, p.angle);
         p.y += p.speed;
@@ -88,7 +91,7 @@ function animate() {
     context.textAlign = "center";
     context.font = "bold " + Math.min(28, window.innerWidth / 20) + "px 'Comic Sans MS'";
 
-    // Sequence
+    // টেক্সট সিকোয়েন্স লজিক
     if (frameNumber < 600) {
         let alpha = Math.min(frameNumber / 200, (600 - frameNumber) / 200);
         context.fillStyle = `rgba(173, 216, 230, ${Math.max(0, alpha)})`;
@@ -133,29 +136,41 @@ function animate() {
     requestAnimationFrame(animate);
 }
 
-// "No" Button Logic
+// --- "NO" BUTTON RUNAWAY & RESET LOGIC ---
 const noBtn = document.getElementById("noButton");
+
 if (noBtn) {
-    const moveAndReset = (e) => {
-        e.preventDefault();
-        const padding = 120;
-        const randomX = Math.random() * (window.innerWidth - padding * 2) + padding;
-        const randomY = Math.random() * (window.innerHeight - padding * 2) + padding;
-        noBtn.style.position = "absolute";
+    const moveButton = (e) => {
+        if (e) e.preventDefault();
+        
+        const buttonWidth = noBtn.offsetWidth;
+        const buttonHeight = noBtn.offsetHeight;
+        
+        // পুরো স্ক্রিন জুড়ে র‍্যান্ডম পজিশন
+        const randomX = Math.floor(Math.random() * (window.innerWidth - buttonWidth));
+        const randomY = Math.floor(Math.random() * (window.innerHeight - buttonHeight));
+        
+        noBtn.style.position = "fixed"; 
         noBtn.style.left = randomX + "px";
         noBtn.style.top = randomY + "px";
+        noBtn.style.zIndex = "999";
 
-        if(e.type === "click") {
+        // ক্লিক করলে সাসপেন্স রিসেট
+        if (e && e.type === "click") {
             isStarted = false;
             btnContainer.style.display = "none";
             startOverlay.style.display = "block";
             frameNumber = 0;
+            // বাটনটাকে আবার তার অরিজিনাল পজিশনে (Yes এর পাশে) ফিরিয়ে নেওয়ার জন্য স্টাইল রিসেট
+            noBtn.style.position = "static"; 
         }
     };
-    noBtn.addEventListener("mouseover", moveAndReset);
-    noBtn.addEventListener("click", moveAndReset);
+
+    noBtn.addEventListener("mouseover", moveButton);
+    noBtn.addEventListener("click", moveButton);
 }
 
+// "Yes" বাটনে সাকসেস মেসেজ
 document.getElementById("yesButton").addEventListener("click", () => {
     alert("YAY! I knew it! ❤️ Best day ever! ❤️✨");
 });
