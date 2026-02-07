@@ -65,6 +65,7 @@ function drawPetal(x, y, size, angle) {
 function animate() {
     if (!isStarted) return;
 
+    // ক্লিয়ার স্ক্রিন
     context.fillStyle = "#0b0d17";
     context.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -89,43 +90,49 @@ function animate() {
     var x = canvas.width / 2;
     var y = canvas.height / 2;
     context.textAlign = "center";
-    context.font = "bold " + Math.min(28, window.innerWidth / 20) + "px 'Comic Sans MS'";
-
-    // --- Updated Final Text Sequence Logic ---
-
+    
+    // টেক্সট সিকোয়েন্স লজিক (সব আপডেট করা হয়েছে)
     if (frameNumber < 600) {
+        context.font = "bold " + Math.min(28, window.innerWidth / 20) + "px 'Comic Sans MS'";
         let alpha = Math.min(frameNumber / 200, (600 - frameNumber) / 200);
         context.fillStyle = `rgba(173, 216, 230, ${Math.max(0, alpha)})`;
         context.fillText("everyday I cannot believe how lucky I am.", x, y); 
     } 
     else if (frameNumber < 1200) {
+        context.font = "bold " + Math.min(28, window.innerWidth / 20) + "px 'Comic Sans MS'";
         let alpha = Math.min((frameNumber - 600) / 200, (1200 - frameNumber) / 200);
         context.fillStyle = `rgba(173, 216, 230, ${Math.max(0, alpha)})`;
         context.fillText("amongst trillions and trillions of stars,", x, y - 20);
         context.fillText("over billions of years.", x, y + 30);
     } 
     else if (frameNumber < 1800) {
+        context.font = "bold " + Math.min(28, window.innerWidth / 20) + "px 'Comic Sans MS'";
         let alpha = Math.min((frameNumber - 1200) / 200, (1800 - frameNumber) / 200);
         context.fillStyle = `rgba(173, 216, 230, ${Math.max(0, alpha)})`;
         context.fillText("so glad tmk paise ei universe babyy^^", x, y); 
     } 
     else {
         let fAlpha = Math.min((frameNumber - 1800) / 200, 1);
+        
+        // I love you lines
+        context.font = "bold " + Math.min(28, window.innerWidth / 20) + "px 'Comic Sans MS'";
         context.fillStyle = `rgba(255, 133, 161, ${fAlpha})`;
         context.fillText("I love you so much Junie,", x, y - 80);
         context.fillText("more than anything in the world.", x, y - 30); 
         
+        // Together forever line
         if (frameNumber > 2000) {
             let a2 = Math.min((frameNumber - 2000) / 200, 1);
-            context.fillStyle = `rgba(255, 255, 255, ${a2})`;
             context.font = Math.min(22, window.innerWidth / 25) + "px 'Comic Sans MS'";
+            context.fillStyle = `rgba(255, 255, 255, ${a2})`;
             context.fillText("I hope we can stay together forever princess ;33", x, y + 20);
         }
         
+        // Valentine Question
         if (frameNumber > 2300) {
             let a3 = Math.min((frameNumber - 2300) / 200, 1);
+            context.font = "bold " + Math.min(35, window.innerWidth / 15) + "px 'Comic Sans MS'";
             context.fillStyle = `rgba(255, 77, 109, ${a3})`;
-            context.font = "bold 35px 'Comic Sans MS'";
             context.fillText("Will u be my Valentine? 💖", x, y + 100);
             
             btnContainer.style.display = "flex";
@@ -140,8 +147,7 @@ function animate() {
 // --- "NO" BUTTON RUNAWAY LOGIC ---
 const noBtn = document.getElementById("noButton");
 if (noBtn) {
-    const moveButton = (e) => {
-        if (e) e.preventDefault();
+    noBtn.addEventListener("mouseover", () => {
         const buttonWidth = noBtn.offsetWidth;
         const buttonHeight = noBtn.offsetHeight;
         const randomX = Math.floor(Math.random() * (window.innerWidth - buttonWidth));
@@ -150,8 +156,8 @@ if (noBtn) {
         noBtn.style.position = "fixed"; 
         noBtn.style.left = randomX + "px";
         noBtn.style.top = randomY + "px";
-    };
-    noBtn.addEventListener("mouseover", moveButton);
+        noBtn.style.zIndex = "999";
+    });
 }
 
 // "Yes" বাটনে সাকসেস মেসেজ
