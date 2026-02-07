@@ -91,11 +91,13 @@ function animate() {
     context.textAlign = "center";
     context.font = "bold " + Math.min(28, window.innerWidth / 20) + "px 'Comic Sans MS'";
 
-    // টেক্সট সিকোয়েন্স লজিক
+    // --- Updated Text Sequence Logic ---
+
+    // প্রথম মেসেজ: ৩টা ডট কমিয়ে ১টা করা হয়েছে
     if (frameNumber < 600) {
         let alpha = Math.min(frameNumber / 200, (600 - frameNumber) / 200);
         context.fillStyle = `rgba(173, 216, 230, ${Math.max(0, alpha)})`;
-        context.fillText("everyday I cannot believe how lucky I am", x, y);
+        context.fillText("everyday I cannot believe how lucky I am.", x, y); 
     } 
     else if (frameNumber < 1200) {
         let alpha = Math.min((frameNumber - 600) / 200, (1200 - frameNumber) / 200);
@@ -106,19 +108,20 @@ function animate() {
     else if (frameNumber < 1800) {
         let alpha = Math.min((frameNumber - 1200) / 200, (1800 - frameNumber) / 200);
         context.fillStyle = `rgba(173, 216, 230, ${Math.max(0, alpha)})`;
-        context.fillText("beche asi jate tmr sathe time spend korte parbo^^", x, y);
+        // "High pen" বা অন্য কিছু চাইলে এখানে টেক্সট চেঞ্জ করতে পারো
+        context.fillText("so glad I found you in this vast universe", x, y); 
     } 
     else {
         let fAlpha = Math.min((frameNumber - 1800) / 200, 1);
         context.fillStyle = `rgba(255, 133, 161, ${fAlpha})`;
         context.fillText("I love you so much Junie,", x, y - 80);
-        context.fillText("more than sobar theke besi valobasi:PP", x, y - 30);
+        context.fillText("more than anything in the world.", x, y - 30); // 'sobar theke besi' change kora hoise
         
         if (frameNumber > 2000) {
             let a2 = Math.min((frameNumber - 2000) / 200, 1);
             context.fillStyle = `rgba(255, 255, 255, ${a2})`;
             context.font = Math.min(22, window.innerWidth / 25) + "px 'Comic Sans MS'";
-            context.fillText("I hope we can stay together forever :333 🌸", x, y + 20);
+            context.fillText("I hope we can stay together forever.", x, y + 20); // clean text
         }
         
         if (frameNumber > 2300) {
@@ -131,7 +134,6 @@ function animate() {
             btnContainer.style.opacity = a3;
         }
     }
-
     frameNumber++;
     requestAnimationFrame(animate);
 }
