@@ -14,18 +14,18 @@ function resize() {
 window.addEventListener("resize", resize);
 resize();
 
-// ১. স্টার্ট বাটনে ক্লিক করার আগে ড্র ফাংশন কল হবে না
 startButton.addEventListener("click", function() {
     startOverlay.style.display = "none";
     isStarted = true;
-    frameNumber = 0; // ফ্রেম রিসেট
-    animate(); // এখানে ক্লিক করলেই অ্যানিমেশন লুপ শুরু হবে
+    frameNumber = 0;
+    animate(); 
 });
 
 var stars = 500;
 var starArray = [];
 var petals = [];
 
+// Create Stars
 for (var i = 0; i < stars; i++) {
     starArray.push({
         x: Math.random() * canvas.width,
@@ -36,12 +36,13 @@ for (var i = 0; i < stars; i++) {
     });
 }
 
-for (var i = 0; i < 35; i++) {
+// Create Petals
+for (var i = 0; i < 40; i++) {
     petals.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
         size: Math.random() * 5 + 5,
-        speed: Math.random() * 0.8 + 0.4,
+        speed: Math.random() * 0.8 + 0.5,
         drift: Math.random() * 1 - 0.5,
         angle: Math.random() * Math.PI
     });
@@ -61,12 +62,11 @@ function drawPetal(x, y, size, angle) {
 }
 
 function animate() {
-    if (!isStarted) return; // সেফটি চেক
+    if (!isStarted) return;
 
     context.fillStyle = "#0b0d17";
     context.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Stars
     starArray.forEach(s => {
         context.beginPath();
         context.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
@@ -76,7 +76,6 @@ function animate() {
         if (s.opacity > 1 || s.opacity < 0) s.blink = -s.blink;
     });
 
-    // Petals
     petals.forEach(p => {
         drawPetal(p.x, p.y, p.size, p.angle);
         p.y += p.speed;
@@ -87,9 +86,9 @@ function animate() {
     var x = canvas.width / 2;
     var y = canvas.height / 2;
     context.textAlign = "center";
-    context.font = Math.min(26, window.innerWidth / 22) + "px 'Comic Sans MS'";
+    context.font = "bold " + Math.min(28, window.innerWidth / 20) + "px 'Comic Sans MS'";
 
-    // টেক্সট সিকোয়েন্স (প্রতিটি ৬০০ ফ্রেমের গ্যাপে)
+    // Sequence
     if (frameNumber < 600) {
         let alpha = Math.min(frameNumber / 200, (600 - frameNumber) / 200);
         context.fillStyle = `rgba(173, 216, 230, ${Math.max(0, alpha)})`;
@@ -98,29 +97,32 @@ function animate() {
     else if (frameNumber < 1200) {
         let alpha = Math.min((frameNumber - 600) / 200, (1200 - frameNumber) / 200);
         context.fillStyle = `rgba(173, 216, 230, ${Math.max(0, alpha)})`;
-        context.fillText("amongst trillions and trillions of stars, over billions of years", x, y);
+        context.fillText("amongst trillions and trillions of stars,", x, y - 20);
+        context.fillText("over billions of years...", x, y + 30);
     } 
     else if (frameNumber < 1800) {
         let alpha = Math.min((frameNumber - 1200) / 200, (1800 - frameNumber) / 200);
         context.fillStyle = `rgba(173, 216, 230, ${Math.max(0, alpha)})`;
-        context.fillText("beche asi jate tmr sathe time spend korte parbo ei life e.", x, y);
+        context.fillText("beche asi jate tmr sathe time spend korte parbo!", x, y);
     } 
     else {
         let fAlpha = Math.min((frameNumber - 1800) / 200, 1);
         context.fillStyle = `rgba(255, 133, 161, ${fAlpha})`;
-        context.fillText("I love you so much Junie, more than sobar theke besi valobasi!", x, y - 60);
+        context.fillText("I love you so much Junie,", x, y - 80);
+        context.fillText("more than sobar theke besi valobasi!", x, y - 30);
         
         if (frameNumber > 2000) {
             let a2 = Math.min((frameNumber - 2000) / 200, 1);
             context.fillStyle = `rgba(255, 255, 255, ${a2})`;
-            context.fillText("I hope we can stay together forever :333 🌸", x, y - 10);
+            context.font = Math.min(22, window.innerWidth / 25) + "px 'Comic Sans MS'";
+            context.fillText("I hope we can stay together forever :333 🌸", x, y + 20);
         }
         
-        if (frameNumber > 2200) {
-            let a3 = Math.min((frameNumber - 2200) / 200, 1);
+        if (frameNumber > 2300) {
+            let a3 = Math.min((frameNumber - 2300) / 200, 1);
             context.fillStyle = `rgba(255, 77, 109, ${a3})`;
-            context.font = "bold 32px 'Comic Sans MS'";
-            context.fillText("Will u be my Valentine? 💖", x, y + 70);
+            context.font = "bold 35px 'Comic Sans MS'";
+            context.fillText("Will u be my Valentine? 💖", x, y + 100);
             
             btnContainer.style.display = "flex";
             btnContainer.style.opacity = a3;
@@ -131,12 +133,12 @@ function animate() {
     requestAnimationFrame(animate);
 }
 
-// ২. No বাটন লজিক (রিসেট করবে আগের অবস্থায়)
+// "No" Button Logic
 const noBtn = document.getElementById("noButton");
 if (noBtn) {
     const moveAndReset = (e) => {
         e.preventDefault();
-        const padding = 100;
+        const padding = 120;
         const randomX = Math.random() * (window.innerWidth - padding * 2) + padding;
         const randomY = Math.random() * (window.innerHeight - padding * 2) + padding;
         noBtn.style.position = "absolute";
@@ -146,7 +148,7 @@ if (noBtn) {
         if(e.type === "click") {
             isStarted = false;
             btnContainer.style.display = "none";
-            startOverlay.style.display = "block"; // আবার স্টার্ট বাটন দেখাবে
+            startOverlay.style.display = "block";
             frameNumber = 0;
         }
     };
@@ -155,5 +157,5 @@ if (noBtn) {
 }
 
 document.getElementById("yesButton").addEventListener("click", () => {
-    alert("YAY! I'm the luckiest person in the world! ❤️✨");
+    alert("YAY! I knew it! ❤️ Best day ever! ❤️✨");
 });
