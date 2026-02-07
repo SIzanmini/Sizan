@@ -1,80 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta property="og:image" content="https://raw.githubusercontent.com/sojijr/valentine-website/main/public/images/favicon.png">
-    <link rel="icon" href="public/images/favicon.png" type="image/x-icon" />  
     <title>Will u be my Valentine? 💖</title>
-    <link rel="stylesheet" href="public/style.css">
-    
     <style>
-      body {
-        margin: 0;
-        overflow: hidden;
-        background-color: black;
-      }
+        body { margin: 0; overflow: hidden; background-color: black; }
+        
+        /* Start Overlay */
+        #startOverlay {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 200;
+            text-align: center;
+            font-family: 'Comic Sans MS', cursive;
+        }
 
-      #buttonContainer {
-        position: absolute;
-        top: 85%; /* Button niche nambiyechi */
-        left: 50%;
-        transform: translate(-50%, -50%);
-        display: none; /* JS theke show hobe */
-        gap: 20px;
-        z-index: 100;
-      }
+        #buttonContainer {
+            position: absolute;
+            top: 85%; left: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+            gap: 20px;
+            z-index: 100;
+        }
 
-      .btn {
-        padding: 12px 25px;
-        font-size: 18px;
-        font-family: 'Comic Sans MS', cursive;
-        border: none;
-        border-radius: 25px;
-        cursor: pointer;
-        transition: 0.3s;
-        box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
-      }
+        .btn {
+            padding: 12px 25px;
+            font-size: 18px;
+            font-family: 'Comic Sans MS', cursive;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+        }
 
-      #yesButton {
-        background-color: #ff4d6d;
-        color: white;
-      }
+        #yesButton { background-color: #ff4d6d; color: white; }
+        #noButton { background-color: #ffffff; color: #ff4d6d; }
+        #startButton { background-color: #ff4d6d; color: white; font-size: 22px; padding: 15px 40px; }
 
-      #noButton {
-        background-color: #ffffff;
-        color: #ff4d6d;
-      }
-
-      #yesButton:hover {
-        transform: scale(1.1);
-        background-color: #ff758f;
-      }
-
-      /* Kitty GIF Design */
-      #kitty {
-        position: absolute;
-        bottom: 20px;
-        left: 20px;
-        width: 100px; /* Size choto thakle cute lage */
-        display: none; /* Button ashar shathe ashbe */
-        z-index: 50;
-        filter: drop-shadow(0 0 10px pink);
-      }
-
-      /* Confetti for Yes click */
-      .confetti {
-        pointer-events: none;
-      }
+        h1 { color: #ff4d6d; margin-bottom: 20px; }
     </style>
-  </head>
-  <body>
+</head>
+<body>
+
+    <div id="startOverlay">
+        <h1>Ready for a surprise?</h1>
+        <button id="startButton" class="btn">Click to Start! ✨</button>
+    </div>
+
     <canvas id="starfield"></canvas>
+
     <div id="buttonContainer">
         <button id="yesButton" class="btn">Yes! 💖</button>
         <button id="noButton" class="btn">No.. 🥺</button>
     </div>
 
     <script src="script.js"></script>
-  </body>
+</body>
 </html>
