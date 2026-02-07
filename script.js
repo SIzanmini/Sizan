@@ -109,7 +109,7 @@ function animate() {
         let alpha = Math.min((frameNumber - 1200) / 200, (1800 - frameNumber) / 200);
         context.fillStyle = `rgba(173, 216, 230, ${Math.max(0, alpha)})`;
         // "High pen" বা অন্য কিছু চাইলে এখানে টেক্সট চেঞ্জ করতে পারো
-        context.fillText("so glad I found you in this vast universe", x, y); 
+        context.fillText("so glad tmk paise ei universe e", x, y); 
     } 
     else {
         let fAlpha = Math.min((frameNumber - 1800) / 200, 1);
