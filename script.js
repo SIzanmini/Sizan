@@ -2,10 +2,6 @@ var canvas = document.getElementById("starfield");
 var context = canvas.getContext("2d");
 var btnContainer = document.getElementById("buttonContainer");
 
-// ইমেজ ডিলিট করে দিয়েছি, তাই ওই আইডি আর লাগবে না
-var kitty = document.getElementById("kitty");
-if(kitty) kitty.style.display = "none"; 
-
 function resize() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -42,7 +38,7 @@ for (var i = 0; i < 35; i++) {
 
 var frameNumber = 0;
 
-// Function to draw petal shape (গোল নয়, পাপড়ির মতো)
+// Petal shape drawing function
 function drawPetal(x, y, size, angle) {
     context.save();
     context.translate(x, y);
@@ -57,11 +53,10 @@ function drawPetal(x, y, size, angle) {
 }
 
 function draw() {
-    // Canvas clear প্রতি ফ্রেমে
     context.fillStyle = "#0b0d17";
     context.fillRect(0, 0, canvas.width, canvas.height);
 
-    // 1. Draw Stars
+    // Stars
     starArray.forEach(s => {
         context.beginPath();
         context.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
@@ -71,7 +66,7 @@ function draw() {
         if (s.opacity > 1 || s.opacity < 0) s.blink = -s.blink;
     });
 
-    // 2. Draw Petals
+    // Petals
     petals.forEach(p => {
         drawPetal(p.x, p.y, p.size, p.angle);
         p.y += p.speed;
@@ -79,7 +74,7 @@ function draw() {
         if (p.y > canvas.height) p.y = -20;
     });
 
-    // 3. Sequential Text Logic (একটার পর একটা আসবে)
+    // Sequential Text
     var x = canvas.width / 2;
     var y = canvas.height / 2;
     context.textAlign = "center";
@@ -101,9 +96,7 @@ function draw() {
         context.fillText("beche asi jate tmr sathe time spend korte parbo ei life e.", x, y);
     } 
     else {
-        // Final Screen
         let fAlpha = Math.min((frameNumber - 1800) / 200, 1);
-        
         context.fillStyle = `rgba(255, 133, 161, ${fAlpha})`;
         context.fillText("I love you so much Junie, more than sobar theke besi valobasi!", x, y - 60);
         
@@ -119,7 +112,6 @@ function draw() {
             context.font = "bold 32px 'Comic Sans MS'";
             context.fillText("Will u be my Valentine? 💖", x, y + 70);
             
-            // Show Buttons
             btnContainer.style.display = "flex";
             btnContainer.style.opacity = a3;
         }
@@ -129,7 +121,7 @@ function draw() {
     requestAnimationFrame(draw);
 }
 
-// No button behavior (মাউস নিলে পালাবে)
+// Button behavior
 const noBtn = document.getElementById("noButton");
 noBtn.onmouseover = function() {
     this.style.position = "absolute";
