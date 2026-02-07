@@ -2,7 +2,6 @@ var canvas = document.getElementById("starfield");
 var context = canvas.getContext("2d");
 var btnContainer = document.getElementById("buttonContainer");
 
-// Screen resize function
 function resize() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -14,7 +13,7 @@ var stars = 500;
 var starArray = [];
 var petals = [];
 
-// Initialize stars (Background stars)
+// Stars logic
 for (var i = 0; i < stars; i++) {
     starArray.push({
         x: Math.random() * canvas.width,
@@ -25,13 +24,13 @@ for (var i = 0; i < stars; i++) {
     });
 }
 
-// Initialize falling petals (Flowers/Hearts)
+// Petals initialization (Flower shape)
 for (var i = 0; i < 35; i++) {
     petals.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
         size: Math.random() * 5 + 5,
-        speed: Math.random() * 1 + 0.5,
+        speed: Math.random() * 0.8 + 0.4, // Slow and steady fall
         drift: Math.random() * 1 - 0.5,
         angle: Math.random() * Math.PI
     });
@@ -39,7 +38,7 @@ for (var i = 0; i < 35; i++) {
 
 var frameNumber = 0;
 
-// Function to draw petal shape (গোল নয়, হার্ট বা পাপড়ির মতো)
+// Function to draw petal shape instead of circles
 function drawPetal(x, y, size, angle) {
     context.save();
     context.translate(x, y);
@@ -54,11 +53,11 @@ function drawPetal(x, y, size, angle) {
 }
 
 function draw() {
-    // Clear background to prevent text overlapping
+    // Force clear every frame to fix text overlapping
     context.fillStyle = "#0b0d17";
     context.fillRect(0, 0, canvas.width, canvas.height);
 
-    // 1. Draw Stars
+    // Draw Stars
     starArray.forEach(s => {
         context.beginPath();
         context.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
@@ -68,7 +67,7 @@ function draw() {
         if (s.opacity > 1 || s.opacity < 0) s.blink = -s.blink;
     });
 
-    // 2. Draw Petals
+    // Draw Falling Flowers/Petals
     petals.forEach(p => {
         drawPetal(p.x, p.y, p.size, p.angle);
         p.y += p.speed;
@@ -76,13 +75,13 @@ function draw() {
         if (p.y > canvas.height) p.y = -20;
     });
 
-    // 3. Sequential Text Logic (একটার পর একটা শান্তভাবে আসবে)
+    // Text Display Logic (Sequential & Smooth)
     var x = canvas.width / 2;
     var y = canvas.height / 2;
     context.textAlign = "center";
     context.font = Math.min(26, window.innerWidth / 22) + "px 'Comic Sans MS'";
 
-    // Timing (Each line gets 600 frames)
+    // Sequence (600 frames = ~10 seconds per line)
     if (frameNumber < 600) {
         let alpha = Math.min(frameNumber / 200, (600 - frameNumber) / 200);
         context.fillStyle = `rgba(173, 216, 230, ${alpha})`;
@@ -99,7 +98,7 @@ function draw() {
         context.fillText("beche asi jate tmr sathe time spend korte parbo ei life e.", x, y);
     } 
     else {
-        // Final Final Screen (Everything stays here)
+        // Final screen stays until the end
         let fAlpha = Math.min((frameNumber - 1800) / 200, 1);
         
         context.fillStyle = `rgba(255, 133, 161, ${fAlpha})`;
@@ -107,37 +106,3 @@ function draw() {
         
         if (frameNumber > 2000) {
             let a2 = Math.min((frameNumber - 2000) / 200, 1);
-            context.fillStyle = `rgba(255, 255, 255, ${a2})`;
-            context.fillText("I hope we can stay together forever :333 🌸", x, y - 10);
-        }
-        
-        if (frameNumber > 2200) {
-            let a3 = Math.min((frameNumber - 2200) / 200, 1);
-            context.fillStyle = `rgba(255, 77, 109, ${a3})`;
-            context.font = "bold 32px 'Comic Sans MS'";
-            context.fillText("Will u be my Valentine? 💖", x, y + 70);
-            
-            // Show Buttons
-            btnContainer.style.display = "flex";
-            btnContainer.style.opacity = a3;
-        }
-    }
-
-    frameNumber++;
-    requestAnimationFrame(draw);
-}
-
-// No button run away logic
-const noBtn = document.getElementById("noButton");
-noBtn.onmouseover = function() {
-    this.style.position = "absolute";
-    this.style.left = Math.random() * (window.innerWidth - 120) + "px";
-    this.style.top = Math.random() * (window.innerHeight - 60) + "px";
-};
-
-// Yes button click
-document.getElementById("yesButton").onclick = function() {
-    alert("YAY! I'm the luckiest person in the world! ❤️✨");
-};
-
-draw();
