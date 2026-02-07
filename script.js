@@ -4,7 +4,7 @@ var btnContainer = document.getElementById("buttonContainer");
 var startOverlay = document.getElementById("startOverlay");
 var startButton = document.getElementById("startButton");
 
-var isStarted = false;
+var isStarted = false; 
 var frameNumber = 0;
 
 function resize() {
@@ -14,19 +14,18 @@ function resize() {
 window.addEventListener("resize", resize);
 resize();
 
-// Start Button Click
-startButton.addEventListener("click", () => {
+// ১. স্টার্ট বাটনে ক্লিক করার আগে ড্র ফাংশন কল হবে না
+startButton.addEventListener("click", function() {
     startOverlay.style.display = "none";
     isStarted = true;
-    frameNumber = 0; // Reset frames
-    draw(); 
+    frameNumber = 0; // ফ্রেম রিসেট
+    animate(); // এখানে ক্লিক করলেই অ্যানিমেশন লুপ শুরু হবে
 });
 
 var stars = 500;
 var starArray = [];
 var petals = [];
 
-// Initialize Stars
 for (var i = 0; i < stars; i++) {
     starArray.push({
         x: Math.random() * canvas.width,
@@ -37,7 +36,6 @@ for (var i = 0; i < stars; i++) {
     });
 }
 
-// Initialize Falling Petals
 for (var i = 0; i < 35; i++) {
     petals.push({
         x: Math.random() * canvas.width,
@@ -62,12 +60,13 @@ function drawPetal(x, y, size, angle) {
     context.restore();
 }
 
-function draw() {
-    if (!isStarted) return;
+function animate() {
+    if (!isStarted) return; // সেফটি চেক
 
     context.fillStyle = "#0b0d17";
     context.fillRect(0, 0, canvas.width, canvas.height);
 
+    // Stars
     starArray.forEach(s => {
         context.beginPath();
         context.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
@@ -77,6 +76,7 @@ function draw() {
         if (s.opacity > 1 || s.opacity < 0) s.blink = -s.blink;
     });
 
+    // Petals
     petals.forEach(p => {
         drawPetal(p.x, p.y, p.size, p.angle);
         p.y += p.speed;
@@ -89,20 +89,20 @@ function draw() {
     context.textAlign = "center";
     context.font = Math.min(26, window.innerWidth / 22) + "px 'Comic Sans MS'";
 
-    // Text Sequence
+    // টেক্সট সিকোয়েন্স (প্রতিটি ৬০০ ফ্রেমের গ্যাপে)
     if (frameNumber < 600) {
         let alpha = Math.min(frameNumber / 200, (600 - frameNumber) / 200);
-        context.fillStyle = `rgba(173, 216, 230, ${alpha})`;
+        context.fillStyle = `rgba(173, 216, 230, ${Math.max(0, alpha)})`;
         context.fillText("everyday I cannot believe how lucky I am", x, y);
     } 
     else if (frameNumber < 1200) {
         let alpha = Math.min((frameNumber - 600) / 200, (1200 - frameNumber) / 200);
-        context.fillStyle = `rgba(173, 216, 230, ${alpha})`;
+        context.fillStyle = `rgba(173, 216, 230, ${Math.max(0, alpha)})`;
         context.fillText("amongst trillions and trillions of stars, over billions of years", x, y);
     } 
     else if (frameNumber < 1800) {
         let alpha = Math.min((frameNumber - 1200) / 200, (1800 - frameNumber) / 200);
-        context.fillStyle = `rgba(173, 216, 230, ${alpha})`;
+        context.fillStyle = `rgba(173, 216, 230, ${Math.max(0, alpha)})`;
         context.fillText("beche asi jate tmr sathe time spend korte parbo ei life e.", x, y);
     } 
     else {
@@ -128,15 +128,14 @@ function draw() {
     }
 
     frameNumber++;
-    requestAnimationFrame(draw);
+    requestAnimationFrame(animate);
 }
 
-// "No" Button Runaway and Reset Logic
+// ২. No বাটন লজিক (রিসেট করবে আগের অবস্থায়)
 const noBtn = document.getElementById("noButton");
 if (noBtn) {
     const moveAndReset = (e) => {
         e.preventDefault();
-        // Move button
         const padding = 100;
         const randomX = Math.random() * (window.innerWidth - padding * 2) + padding;
         const randomY = Math.random() * (window.innerHeight - padding * 2) + padding;
@@ -144,20 +143,17 @@ if (noBtn) {
         noBtn.style.left = randomX + "px";
         noBtn.style.top = randomY + "px";
 
-        // Secret Reset: "No" এ ক্লিক করলে আবার শুরুতে নিয়ে যাবে
         if(e.type === "click") {
             isStarted = false;
             btnContainer.style.display = "none";
-            startOverlay.style.display = "block";
+            startOverlay.style.display = "block"; // আবার স্টার্ট বাটন দেখাবে
             frameNumber = 0;
         }
     };
-
     noBtn.addEventListener("mouseover", moveAndReset);
     noBtn.addEventListener("click", moveAndReset);
 }
 
-// "Yes" Button Alert
 document.getElementById("yesButton").addEventListener("click", () => {
     alert("YAY! I'm the luckiest person in the world! ❤️✨");
 });
